@@ -4,6 +4,8 @@ var toSort = [1, 5, 8, 22, 90, 35, 2, 5, 9, 15];
 var inversions = 0;
 var difference = Infinity;
 var closestPair = [];
+
+//some change
 function mergeSort (array) {
     if (array.length < 2) {
         return array;
