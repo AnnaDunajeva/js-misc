@@ -2,8 +2,8 @@
 //1234 == 12=a, 34=b; 
 //5678 == 56=c, 78=d;
 //ad+bc = (a+b)(c+d)-ac-bd
-var number1 = 123;
-var number2 = 5678;
+var number1 = 12686;
+var number2 = 5647467467478;
 function karatsuba (number1, number2) {
     // var integers2 = number2.toString().length;
     if (number1 < 10 && number2 < 10) {
@@ -32,4 +32,5 @@ function karatsuba (number1, number2) {
     return result;
     }
 }
-karatsuba(number1, number2);
+console.log(karatsuba(number1, number2));
+console.log(number1*number2);
