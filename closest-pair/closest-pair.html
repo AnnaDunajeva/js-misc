@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet">
+    <script async type='module' src='canvas-manipulation.js'></script>
+    <title>Closest Pair Calculator</title>
+</head>
+<body>
+    <h1>Find two closest points among set of points with closest point algorithm.</h1>
+    <p>Generate random points or place points manually by clicking on grid. Then, algorithm will find two closest points.</p>
+    <p>Asymptotic complexity of this algorithm is O(n*log(n)).</p>
+    <!-- <input type="text" placeholder="your coordinates e.g [1,2], [0,-19], ..." id="input"> -->
+    <div>
+        <canvas id='canvas' width="400" height="400"></canvas>
+        <div>
+            <p id='coordinates'>Your coordinates: </p>
+            <p id='closestPair'>Closest pair: </p>
+            <p id='closestDistance'>Closest distance:</p>
+        </div>
+    </div>
+    <button id='undoButton'>Undo</button>
+    <button id='clearAllButton'>Clear All</button>
+    <button id='generateCoordinates'>Generate Coordinates</button>
+</body>

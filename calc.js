@@ -1,13 +1,27 @@
-var input = "( ( ( ( ( 1 * 2 + 1 ) * 2 ) + 1 * 4 ) + ( 4 - 2 * 2 ) ) * ( ( 2 - 1 ) * 3 ) ) + 5";
-var symbols = input.split(" ");
+//var input = "( ( ( ( ( 1 * 2 + 1 ) * 2 ) + 1 * 4 ) + ( 4 - 2 * 2 ) ) * ( ( 2 - 1 ) * 3 ) ) + 5";
+var input = "(-1 + 2*(-1 +3)) /3"
+var symbols = input.split(" ").join("").split("");
 var numbers = '0123456789';
 
-symbols.forEach (function toNumber (symbol, index) {
-    if (numbers.includes(symbol)) {
-        var number = parseInt(symbol);
-        symbols.splice(index, 1, number);
-    } 
-});
+// symbols.forEach (function toNumber (symbol, index) {
+//     if (numbers.includes(symbol)) { //need to modify to allow for negative numbers and floats
+//         let number = parseInt(symbol);
+//         symbols.splice(index, 1, number);
+//     } 
+// });
+
+//changed to allow for negative numbers
+for (let i = 0; i < symbols.length; i++) {
+    if (numbers.includes(symbols[i])) { 
+        if (i > 0 && symbols[i - 1] === "-" && (i === 1 || symbols[i - 2] === "(")) {
+            let number = parseInt("-" + symbols[i]);
+            symbols.splice(i - 1, 2, number);
+        } else {
+        let number = parseInt(symbols[i]);
+        symbols.splice(i, 1, number);
+        }
+    }
+}
 
 function calcWithBrackets (symbols, index) {
     for (let i = index; i < symbols.length; i++) {
@@ -19,9 +33,14 @@ function calcWithBrackets (symbols, index) {
             }
         }
     }
+    //changed to allow division. Does not controll for 0 division.
     for (let i = index; i < symbols.length; i++){
-        if (symbols[i] === '*') {
+        if (symbols[i] === '*') { 
             let multiplied = symbols[i - 1] * symbols [i + 1];
+            symbols.splice(i - 1, 3, multiplied);
+            i--;
+        } else if (symbols[i] === '/') { 
+            let multiplied = symbols[i - 1] / symbols [i + 1];
             symbols.splice(i - 1, 3, multiplied);
             i--;
         } else if (symbols[i] === ')') {
