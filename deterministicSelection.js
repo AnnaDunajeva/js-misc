@@ -82,7 +82,7 @@ function partition(array) { //array with pivot at index 0
     if (duplicate === 0) { 
         array.pop();
     } else {
-        for (let i = 0; i < sameAsPivot + 1; i++) {
+        for (let i = 0; i <= sameAsPivot; i++) {
             array[i] = array[j - 1];
             array[j - 1] = pivot;
             j--;
@@ -94,8 +94,8 @@ function partition(array) { //array with pivot at index 0
     }
 }
 
-function deterministicSelection(array, i) {
-    // console.log('I: ', i)
+function deterministicSelection(array, i) {//assumes i (ith order statistic) starts from 1. Important for comparisons
+    console.log('I: ', i)
     recursionCount += 1;
     if (array.length === 1) {
         return array[0];
@@ -118,14 +118,21 @@ function deterministicSelection(array, i) {
             }
             
         }
-        // console.log('medians: ', medians)
-        let pivot = deterministicSelection(medians, Math.trunc(array.length / 10 + 1)); //plus one because it should not be index, but number count
-        // console.log('pivot: ', pivot);
+        console.log('medians: ', medians);
+        let pivot = deterministicSelection(medians, Math.trunc(array.length / 10 + 1)); //plus one because it should not be index, 
+                                                                                        //but number count (eg start from 1). Especially 
+                                                                                        //important for odd length (because for even we dont care if 
+                                                                                        //we take left or right element with regards to middle line), 
+                                                                                        //but if we dont add 1, then if length is odd, we will not take 
+                                                                                        //middle element but one before it because function assumes it recieves 
+                                                                                        //count starting from 1. 11/2 -> 5 and 5th element wont be middle, 
+                                                                                        //middle is 6th.
+        console.log('pivot: ', pivot);
         array.unshift(pivot);
-        // console.log('array to partition: ', array);
+        console.log('array to partition: ', array);
         let partitioned = partition(array);
-        // console.log('partitioned array, i and pivot position: ', array, i, partitioned.pivotPosition);
-        if (partitioned.pivotPosition <= i - 1 && partitioned.pivotPosition + partitioned.sameAsPivot >= i - 1) { // minus one is required to comver i to index (otherwise its number count)
+        console.log('partitioned array, i and pivot position: ', array, i, partitioned.pivotPosition);
+        if (partitioned.pivotPosition <= i - 1 && partitioned.pivotPosition + partitioned.sameAsPivot >= i - 1) { // minus one is required to convert i to index (otherwise its number count)
             return array[partitioned.pivotPosition];
         } else if (partitioned.pivotPosition > i - 1) {
             return deterministicSelection(array.slice(0, partitioned.pivotPosition), i);
@@ -135,10 +142,16 @@ function deterministicSelection(array, i) {
     }
 }
 let recursionCount = 0;
-let input = randomArray(100,150);
-// console.log(input.slice(20, 31));
+// let input = randomArray(20,50);
+let input = [
+    21,  9, 5, 30, 33, 19, 33,
+    18, 34, 3, 38, 37, 45, 35,
+    33, 24, 9, 22, 10, 20
+  ];
+console.log(input);
 let array = input.slice(0);
 let ithElement = deterministicSelection(array, 10);
 let sortedInput = (mergeSort(input));
 console.log(sortedInput.slice(0, 10));
 console.log('ithelement: ', ithElement, 'recursionCount:', recursionCount);
+
