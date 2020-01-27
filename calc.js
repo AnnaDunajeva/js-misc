@@ -1,27 +1,44 @@
-//var input = "( ( ( ( ( 1 * 2 + 1 ) * 2 ) + 1 * 4 ) + ( 4 - 2 * 2 ) ) * ( ( 2 - 1 ) * 3 ) ) + 5";
-var input = "(-1 + 2*(-1 +3)) /3"
-var symbols = input.split(" ").join("").split("");
-var numbers = '0123456789';
+//const input = "( ( ( ( ( 1 * 2 + 1 ) * 2 ) + 1 * 4 ) + ( 4 - 2 * 2 ) ) * ( ( 2 - 1 ) * 3 ) ) + 5";
+const input = "-21*11 + 2*(-10 +3) /2"
 
-// symbols.forEach (function toNumber (symbol, index) {
-//     if (numbers.includes(symbol)) { //need to modify to allow for negative numbers and floats
-//         let number = parseInt(symbol);
-//         symbols.splice(index, 1, number);
-//     } 
-// });
-
-//changed to allow for negative numbers
-for (let i = 0; i < symbols.length; i++) {
+let symbols = input.split(" ").join("").split("");
+const numbers = '0123456789';
+debugger
+const modifiedInput = []
+let i = 0
+while (i < symbols.length) {
     if (numbers.includes(symbols[i])) { 
+        let num = symbols[i]
         if (i > 0 && symbols[i - 1] === "-" && (i === 1 || symbols[i - 2] === "(")) {
-            let number = parseInt("-" + symbols[i]);
-            symbols.splice(i - 1, 2, number);
-        } else {
-        let number = parseInt(symbols[i]);
-        symbols.splice(i, 1, number);
+            modifiedInput.pop()
+            num = '-' + num
         }
+        i++
+        while (numbers.includes(symbols[i])) {
+            num = num + symbols[i]
+            i++
+        }
+        modifiedInput.push(parseInt(num))
+    } else {
+        modifiedInput.push(symbols[i])
+        i++
     }
 }
+symbols = modifiedInput
+// for (let i = 0; i < symbols.length; i++) {
+//     let num = ''
+//     if (numbers.includes(symbols[i])) { 
+//         if (i > 0 && symbols[i - 1] === "-" && (i === 1 || symbols[i - 2] === "(")) {
+//             //let number = parseInt("-" + symbols[i]);
+//             //symbols.splice(i - 1, 2, number);
+//             num = '-' + num
+//         } else {
+//             symbols[i] = parseInt(symbols[i]);
+//             //let number = parseInt(symbols[i]);
+//             //symbols.splice(i, 1, number);
+//         }
+//     }
+// }
 
 function calcWithBrackets (symbols, index) {
     for (let i = index; i < symbols.length; i++) {
@@ -33,13 +50,15 @@ function calcWithBrackets (symbols, index) {
             }
         }
     }
-    //changed to allow division. Does not controll for 0 division.
     for (let i = index; i < symbols.length; i++){
         if (symbols[i] === '*') { 
             let multiplied = symbols[i - 1] * symbols [i + 1];
             symbols.splice(i - 1, 3, multiplied);
             i--;
         } else if (symbols[i] === '/') { 
+            if (symbols [i + 1] === 0) {
+                throw new Error('Division by 0 is not allowed!')
+            }
             let multiplied = symbols[i - 1] / symbols [i + 1];
             symbols.splice(i - 1, 3, multiplied);
             i--;
